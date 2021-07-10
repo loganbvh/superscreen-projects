@@ -130,7 +130,7 @@ def make_layout_small_susc_jkr():
     )
 
 
-def make_layout_small_susc():
+def small_susc():
     def rotate(arr, degrees):
         c = np.cos(np.radians(degrees))
         s = np.sin(np.radians(degrees))
@@ -152,12 +152,47 @@ def make_layout_small_susc():
         ]
     )
 
+    fc = np.concatenate([
+        fc[1:-4],
+        [[1.95, -0.5]],
+        [[1.97, -0.8]],
+        [[1.97, -1.2]],
+        [[1.97, -1.5]],
+        [[1.97, -2.0]],
+        [[1.90, -2.1]],
+        [[1.80, -2.10]],
+        [[1.60, -2.10]],
+        [[1.40, -2.00]],
+        [[1.30, -1.95]],
+        [[1.20, -1.80]],
+        [[1.15, -1.50]],
+        [[1.10, -1.40]],
+    ])
+
     fc_center = np.concatenate(
         [
             np.array([[1.45, -0.65]]),
             fc0[1:28][::-1],
         ]
     )
+
+    fc_center = np.concatenate([
+        fc_center[4:-1],
+        [[1.20, -0.20]],
+        [[1.40, -0.45]],
+        [[1.50, -0.65]],
+        [[1.55, -0.75]],
+        [[1.60, -0.85]],
+        [[1.62, -0.95]],
+        [[1.64, -1.00]],
+        [[1.66, -1.2]],
+        [[1.63, -1.30]],
+        [[1.50, -1.30]],
+        [[1.40, -1.15]],
+        [[1.30, -1.00]],
+        [[1.20, -0.85]],
+        [[1.10, -0.76]],
+    ])
 
     fc_shield = np.array(
         [
@@ -250,7 +285,7 @@ def make_layout_small_susc():
     ]
 
     abstract_regions = [
-        Polygon("bounding_box", layer="BE", points=polygons["bounding_box"]),
+        Polygon("bounding_box", layer="W1", points=polygons["bounding_box"]),
         Polygon("pl_hull", layer="W1", points=polygons["pl_hull"]),
     ]
 
