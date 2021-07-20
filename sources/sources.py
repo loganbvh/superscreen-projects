@@ -9,7 +9,7 @@ Numeric = Union[int, float, np.ndarray]
 
 
 def constant(
-    x: Numeric, y: Numeric, z: Numeric, value: Optional[Union[int, float]] = 0
+    x: Numeric, y: Numeric, z: Numeric, value: Union[int, float] = 0
 ) -> Numeric:
     """Constant field.
 
@@ -28,20 +28,21 @@ def vortex(
     x: Numeric,
     y: Numeric,
     z: Numeric,
-    vortex_position: Optional[Tuple[float, float, float]] = (0, 0, 0),
+    x0: float = 0,
+    y0: float = 0,
+    z0: float = 0,
     nPhi0: Optional[int] = 1,
 ) -> Numeric:
     """Field from an isolated vortex.
 
     Args:
         x, y, z: Position coordinates.
-        vortex_position: (x, y, z) position of the vortex.
+        x0, y0, z0: Vortex position
         nPhi0: Number of flux quanta contained in the vortex.
     """
-    xv, yv, zv = vortex_position
-    xp = x - xv
-    yp = y - yv
-    zp = z - zv
+    xp = x - x0
+    yp = y - y0
+    zp = z - z0
     Hz0 = zp / (xp ** 2 + yp ** 2 + zp ** 2) ** (3 / 2) / (2 * np.pi)
     return nPhi0 * Hz0
 
@@ -91,13 +92,15 @@ def tilted_vortex(
     x: Numeric,
     y: Numeric,
     z: Numeric,
-    vortex_position: Optional[Tuple[float, float, float]] = (0, 0, 0),
-    nPhi0: Optional[int] = 1,
-    x_axis_tilt: Optional[float] = 0,
-    x_axis_offset: Optional[float] = 0,
-    y_axis_tilt: Optional[float] = 0,
-    y_axis_offset: Optional[float] = 0,
-    tilt_x_first: Optional[bool] = True,
+    x0: float = 0,
+    y0: float = 0,
+    z0: float = 0,
+    nPhi0: int = 1,
+    x_axis_tilt: float = 0,
+    x_axis_offset: float = 0,
+    y_axis_tilt: float = 0,
+    y_axis_offset: float = 0,
+    tilt_x_first: bool = True,
 ):
     if tilt_x_first:
         x, y, z = tilt(x, y, z, axis="x", angle=x_axis_tilt, offset=x_axis_offset)
@@ -106,28 +109,35 @@ def tilted_vortex(
         x, y, z = tilt(x, y, z, axis="y", angle=y_axis_tilt, offset=y_axis_offset)
         x, y, z = tilt(x, y, z, axis="x", angle=x_axis_tilt, offset=x_axis_offset)
 
-    return vortex(x, y, z, vortex_position=vortex_position, nPhi0=nPhi0)
+    return vortex(x, y, z, x0=x0, y0=y0, z0=z0, nPhi0=nPhi0)
 
 
 
 def VortexField(
-    position: Tuple[float, float, float], nPhi0: Optional[int] = 1
+    x0: float = 0,
+    y0: float = 0,
+    z0: float = 0,
+    nPhi0: int = 1
 ) -> Parameter:
-    return Parameter(vortex, vortex_position=position, nPhi0=nPhi0)
+    return Parameter(vortex, x0=x0, y0=y0, z0=z0, nPhi0=nPhi0)
 
 
 def TiltedVortexField(
-    vortex_position: Tuple[float, float, float],
-    nPhi0: Optional[int] = 1,
-    x_axis_tilt: Optional[float] = 0,
-    x_axis_offset: Optional[float] = 0,
-    y_axis_tilt: Optional[float] = 0,
-    y_axis_offset: Optional[float] = 0,
-    tilt_x_first: Optional[bool] = True,
+    x0: float = 0,
+    y0: float = 0,
+    z0: float = 0,
+    nPhi0: int = 1,
+    x_axis_tilt: float = 0,
+    x_axis_offset: float = 0,
+    y_axis_tilt: float = 0,
+    y_axis_offset: float = 0,
+    tilt_x_first: bool = True,
 ) -> Parameter:
     return Parameter(
         tilted_vortex,
-        vortex_position=vortex_position,
+        x0=x0,
+        y0=y0,
+        z0=z0,
         nPhi0=nPhi0,
         x_axis_tilt=x_axis_tilt,
         x_axis_offset=x_axis_offset,

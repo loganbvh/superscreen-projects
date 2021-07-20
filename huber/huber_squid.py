@@ -5,7 +5,7 @@ import superscreen as sc
 
 def huber_geometry(interp_points=101):
 
-    ri_pl = 1.8
+    ri_pl = 1.7
     ro_pl = 2.7
     w_pl_center = 1.18
     w_pl_outer = 3.10
@@ -184,10 +184,10 @@ def huber_squid():
 
     layers = [
         # sc.Layer("BE", london_lambda=0.08, thickness=d_be, z0=z0_be),
-        sc.Layer("BE", london_lambda=10, thickness=d_be, z0=z0_be),
+        sc.Layer("BE", london_lambda=0.08, thickness=d_be, z0=z0_be),
         sc.Layer("W1", london_lambda=0.08, thickness=d_w1, z0=z0_w1),
         sc.Layer("W2", london_lambda=0.08, thickness=d_w2, z0=z0_w2),
-    ]
+    ][::-1]
 
     films = [
         sc.Polygon("fc", layer="BE", points=polygons["fc"]),
@@ -197,7 +197,8 @@ def huber_squid():
     ]
 
     holes = [
-        sc.Polygon("fc_center", layer="BE", points=polygons["fc_center"][20:-25]),
+        # sc.Polygon("fc_center", layer="BE", points=polygons["fc_center"][20:-25]),
+        sc.Polygon("fc_center", layer="BE", points=polygons["fc_center"]),
     ]
 
     bbox = np.array(
